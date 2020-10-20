@@ -1,11 +1,13 @@
-#!/usr/bin/env python 
+#!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
 
 import numpy as np
 import operator
+from scipy.spatial.distance import cdist
 
-def get_Kernels(x,z,type,kernel_type=0):
+
+def get_Kernels(x, z, type, kernel_type=0):
     '''参数：
     x：np.array [channel,batch,,data] or [batch,data]
     z:np.array [channel,1,,data] or [1,data]
@@ -17,14 +19,14 @@ def get_Kernels(x,z,type,kernel_type=0):
     size1 = np.shape(x)[0]
     size2 = np.shape(z)[0]
     if len(z.shape) == 3:
-        zT = np.swapaxes(z,1,2)
+        zT = np.swapaxes(z, 1, 2)
     else:
         zT = z.T
     kernels = np.matmul(x, zT)
     if kernel_type == 0:
         if type == 1:
             if len(x.shape) == 3:
-                ans = np.zeros([kernels.shape[0],kernels.shape[2]])
+                ans = np.zeros([kernels.shape[0], kernels.shape[2]])
                 for i in range(kernels.shape[0]):
                     ans[i] = np.diagonal(kernels[i])
                 return ans
@@ -32,11 +34,11 @@ def get_Kernels(x,z,type,kernel_type=0):
                 return np.diagonal(kernels[0])
         elif type == 2:
             if len(x.shape) == 3:
-                return kernels.reshape(x.shape[0],-1)
+                return kernels.reshape(x.shape[0], -1)
             return kernels
     else:
         if type == 1:
-            return np.ones([x.shape[0],x.shape[1]])
+            return np.ones([x.shape[0], x.shape[1]])
         else:
             #rbf_sigma = 1.00
             #sigma = -1/(pow(rbf_sigma, 2) * 2)
@@ -44,26 +46,49 @@ def get_Kernels(x,z,type,kernel_type=0):
             if len(x.shape) == 3:
                 ans = []
                 for i in range(x.shape[0]):
-                    dis = np.square(cdist(z[i],x[i]))
-                    #rbf_sigma = np.std(dis)  # 获取方差
+                    dis = np.square(cdist(z[i], x[i]))
+                    # rbf_sigma = np.std(dis)  # 获取方差
                     rbf_sigma = 1e-1
                     sigma = pow(rbf_sigma, 2)
                     ans.append(np.exp(dis/sigma * (-1)))
-                return np.array(ans).reshape(x.shape[0],-1)
-
+                return np.array(ans).reshape(x.shape[0], -1)
 
     return 0
 
+
+def KNN(trains, labels, examples, k=3, disType='cosine'):
+    '''
+    numSamples = trains.shape[0]  # shape[0]表示行数
+    diff = np.tile(test, (numSamples, 1)) - dataSet  # 按元素求差值
+    squaredDiff = diff ** 2  # 将差值平方
+    squaredDist = np.sum(squaredDiff, axis=1)  # 按行累加
+    distance = squaredDist ** 0.5  # 将差值平方和求开方，即得距离
+    '''
+    distance = cdist(examples, trains, disType)
+    sortedDistIndices = np.argsort(distance)
+    classCount = {}  # define a dictionary (can be append element)
+    for i in np.xrange(k):
+        voteLabel = labels[sortedDistIndices[i]]
+        classCount[voteLabel] = classCount.get(voteLabel, 0) + 1
+    maxCount = 0
+    for key, value in classCount.items():
+        if value > maxCount:
+            maxCount = value
+    maxIndex = key
+    return maxIndex
+
+
+'''
 def KNN_with_Kernels(trains, labels, examples,xxK,k=3,dis_type = 'euclidean',kernel_type = 0,d2 = [],d3=[]):
-    '''
-    只支持一次估计
-    :param trains: np.array 训练集输入，size:[n,m]
-    :param labels: np.array 训练集标签输入，size:[n,1]
-    :param examples: np.array 测试集输入，size:[n,m]
-    :param xxK: np.array xTx的核矩阵
-    :param k: int 训练所用K值
-    :return: l_,估计值
-    '''
+    
+只支持一次估计
+: param trains: np.array 训练集输入，size: [n, m]
+: param labels: np.array 训练集标签输入，size: [n, 1]
+: param examples: np.array 测试集输入，size: [n, m]
+: param xxK: np.array xTx的核矩阵
+: param k: int 训练所用K值
+: return: l_, 估计值
+
     l2_gmma = 1
 
     # 获取kernel
@@ -130,5 +155,4 @@ def KNN_with_Kernels(trains, labels, examples,xxK,k=3,dis_type = 'euclidean',ker
             if_get_d3 = 0
         return l_,if_get_d3,new_d2d3,change_d3
     return l_
-
-
+'''
