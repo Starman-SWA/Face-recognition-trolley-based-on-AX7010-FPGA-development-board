@@ -18,3 +18,6 @@
 
 含运行在PYNQ平台上的人脸检测、识别与控制小车的主程序。其中人脸检测由OpenCV库实现，人脸识别用LightCNN实现。
 
+### 效果图
+
+<img width="320" height="240" src="https://github.com/Starman-SWA/readme_img/blob/main/photo_2020-10-25_18-34-00.jpg?raw=true"/>
