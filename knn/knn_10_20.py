@@ -14,6 +14,7 @@ def get_Kernels(x, z, type, kernel_type=0):
     type:int  1:x==z,2:x!=z
     kernel_type:
     '''
+     
     x = x.astype(np.float)
     z = z.astype(np.float)
     size1 = np.shape(x)[0]
