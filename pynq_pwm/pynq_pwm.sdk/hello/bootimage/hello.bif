@@ -1,0 +1,6 @@
+//arch = zynq; split = false; format = BIN
+the_ROM_image:
+{
+	[bootloader]D:\Verilog_Projects\ps_helloworld\ps_helloworld\ps_helloworld.sdk\fsbl\Debug\fsbl.elf
+	D:\Verilog_Projects\ps_helloworld\ps_helloworld\ps_helloworld.sdk\hello\Debug\hello.elf
+}
