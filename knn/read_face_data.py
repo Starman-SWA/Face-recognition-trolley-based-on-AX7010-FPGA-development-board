@@ -36,6 +36,7 @@ def read_face_data(save_file,type=1):
             print(img_path)
             getted_length += 1
             img = cv2.imread(img_path)
+            # img = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
             data.append(img)
             label.append(i+1)
             if type !=4  and j >= 4:
@@ -47,8 +48,8 @@ def read_face_data(save_file,type=1):
     if type == 2:
         data = np.transpose(data,(0,3,1,2))
     elif type == 1:
-        data = np.transpose(data,(3,0,1,2))
-        data = np.reshape(data,(3,-1,data.shape[2]*data.shape[3]))
+        # data = np.transpose(data,(3,0,1,2))
+        data = np.reshape(data,(-1,data.shape[1]*data.shape[2]))
 
     label = np.array(label)
     return data,label
