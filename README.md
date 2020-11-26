@@ -20,4 +20,4 @@
 
 ### 效果图
 
-<img width="320" height="240" src="https://github.com/Starman-SWA/readme_img/blob/main/photo_2020-10-25_18-34-00.jpg?raw=true"/>
+<img width="320" height="240" src="https://github.com/Starman-SWA/Face-recognition-trolley-based-on-AX7010-FPGA-development-board/raw/main/photo_2020-10-25_18-34-00.jpg"/>
