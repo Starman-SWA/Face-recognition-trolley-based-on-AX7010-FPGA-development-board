@@ -1,13 +1,10 @@
 import cv2
 import numpy as np
-from retinaface_test import face_detection,get_retinaface_net
+from retinaface_test_in_numpy import face_detection,get_retinaface_net
 from read_face_data import read_face_data
 from knn import KNN_with_Kernels,get_Kernels,KNN,get_d2
-from test_light_cnn_in_numpy import get_feature, get_net
-from light_cnn_test import shift_img_with_eyes
-from utils.load_temtrain_data import load_temtrain_data
+from test_light_cnn_in_numpy import get_feature, get_net, shift_img_with_eyes
 import math
-from utils.retinaface_tool import shift_img,rotate_img
 from hyperparams import Hyperparams
 hp = Hyperparams()
 
@@ -56,6 +53,7 @@ else:
             length2 += 1
             trains.append(tem)
         trains = np.concatenate(trains, axis=1)
+    print("finish")
     print(trains.shape)
     '''
     if recognize_type == 0:
@@ -88,7 +86,7 @@ while(cap.isOpened()):
     ret_flag,Vshow = cap.read()  # 读取视频的照片
     #Vshow = cv2.resize(Vshow,(640, 480),interpolation=cv2.INTER_LINEAR)
     faces = face_detection(retinaface_net,Vshow)
-
+    print(len(faces))
     if len(faces) != 0:
         for face in faces:
             # 截取人脸做数据对齐
@@ -102,6 +100,7 @@ while(cap.isOpened()):
                 continue
             now_face = cv2.resize(tem_face,(hp.img_size[1], hp.img_size[0]),interpolation=cv2.INTER_LINEAR)
             '''
+            print("predicted")
             # 进行预测
             predicted = -1
             if recognize_type != 2:
